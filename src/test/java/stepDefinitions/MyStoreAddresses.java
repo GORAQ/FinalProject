@@ -1,10 +1,12 @@
 package stepDefinitions;
 
 import FinalProject1.LoginPageTest;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class MyStoreAddresses {
@@ -36,15 +39,15 @@ public class MyStoreAddresses {
 
     @When("^User goes to YourAccountPage$")
     public void userGoesToYourAccountPage() {
-        WebElement save1 = driver.findElement(By.xpath("//*[@id=\'_desktop_user_info\']/div/a[2]/span"));
-        save1.click();
+        WebElement yourAccountPage = driver.findElement(By.xpath("//*[@id=\'_desktop_user_info\']/div/a[2]/span"));
+        yourAccountPage.click();
 
     }
 
     @And("^User goes to Addresses$")
     public void userGoesToAddresses() {
-        WebElement save1 = driver.findElement(By.xpath("//*[@id=\'addresses-link\']/span"));
-        save1.click();
+        WebElement addresses = driver.findElement(By.xpath("//*[@id=\'addresses-link\']/span"));
+        addresses.click();
 
     }
 
@@ -54,32 +57,32 @@ public class MyStoreAddresses {
 
         driver.get("https://prod-kurs.coderslab.pl/index.php?controller=address");
 
-        WebElement Company = driver.findElement(By.name("company"));
-        Company.clear();
-        Company.sendKeys(arg0);
+        WebElement company = driver.findElement(By.name("company"));
+        company.clear();
+        company.sendKeys(arg0);
 
 
-        WebElement Address = driver.findElement(By.name("address1"));
-        Address.clear();
-        Address.sendKeys(arg1);
+        WebElement address = driver.findElement(By.name("address1"));
+        address.clear();
+        address.sendKeys(arg1);
 
 
-        WebElement City = driver.findElement(By.name("city"));
-        City.clear();
-        City.sendKeys(arg2);
+        WebElement city = driver.findElement(By.name("city"));
+        city.clear();
+        city.sendKeys(arg2);
 
-        WebElement Postcode = driver.findElement(By.name("postcode"));
-        Postcode.clear();
-        Postcode.sendKeys(arg3);
+        WebElement postcode = driver.findElement(By.name("postcode"));
+        postcode.clear();
+        postcode.sendKeys(arg3);
 
 
         WebElement roleSelectElement = driver.findElement(By.name("id_country"));
         Select roleSelect = new Select(roleSelectElement);
         roleSelect.selectByValue("17");
 
-        WebElement Phone = driver.findElement(By.name("phone"));
-        Phone.clear();
-        Phone.sendKeys(arg4);
+        WebElement phone = driver.findElement(By.name("phone"));
+        phone.clear();
+        phone.sendKeys(arg4);
 
 
         WebElement save5 = driver.findElement(By.xpath("//*[@id=\'content\']/div/div/form/footer/button"));
@@ -89,7 +92,7 @@ public class MyStoreAddresses {
 
 
     @Then("^User checks data of new created address \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
-    public void userChecksDataOfNewCreatedAddress(String arg0, String arg1, String arg2, String arg3, String arg4) throws Throwable {
+    public void userChecksDataOfNewCreatedAddress(String arg0, String arg1, String arg2, String arg3, String arg4)  {
         // Write code here that turns the phrase above into concrete actions
 
         List<WebElement> addresses = driver.findElements(By.xpath("//article[@class='address']"));
@@ -99,13 +102,11 @@ public class MyStoreAddresses {
         String actualAddress = lastAddress.getText();
         System.out.println(actualAddress);
 
-        assertTrue(actualAddress.contains(arg0 + arg1 + arg2 + arg3 + arg4));
-        System.out.println("New address: " + arg0 + " " + arg1 + " " + arg2 + " " + arg3 + " " + arg4 + " ");
-        //addresses.get(addresses.size()).getText();
+        Assert.assertTrue(actualAddress.contains(arg0));
+        Assert.assertTrue(actualAddress.contains(arg1));
+        Assert.assertTrue(actualAddress.contains(arg2));
+        Assert.assertTrue(actualAddress.contains(arg3));
+        Assert.assertTrue(actualAddress.contains(arg4));
 
-
-
-        //throw new PendingException();
     }
-
 }
