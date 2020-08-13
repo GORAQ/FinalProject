@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MyStoreShopping<DateTimeFormattter> {
@@ -38,37 +39,36 @@ public class MyStoreShopping<DateTimeFormattter> {
     @When("^User puts Product name in Search our catalog$")
     public void userPutsProductNameInSearchOurCatalog() {
         // Write code here that turns the phrase above into concrete actions
-        WebElement SearchOurCatalog = driver.findElement(By.name("s"));
-        SearchOurCatalog.clear();
-        SearchOurCatalog.sendKeys("Hummingbird Printed Sweater");
+        WebElement searchOurCatalog = driver.findElement(By.name("s"));
+        searchOurCatalog.clear();
+        searchOurCatalog.sendKeys("Hummingbird Printed Sweater");
 
-        WebElement Search = driver.findElement(By.xpath("//*[@id=\'search_widget\']/form/button/i"));
-        Search.click();
+        WebElement searchProduct = driver.findElement(By.xpath("//*[@id=\'search_widget\']/form/button/i"));
+        searchProduct.click();
 
     }
 
     @And("^User chooses search icon$")
     public void userChoosesSearchIcon() {
 
-        WebElement Search = driver.findElement(By.xpath("//*[@id=\'js-product-list\']/div[1]/article[1]/div/div[1]/h2/a"));
-        Search.click();
-
+        WebElement chooseSearchIcon = driver.findElement(By.xpath("//*[@id=\'js-product-list\']/div[1]/article[1]/div/div[1]/h2/a"));
+        chooseSearchIcon.click();
 
     }
 
     @And("^User chooses product from the list$")
     public void userChoosesProductFromTheList() {
-        WebElement roleSelectElement = driver.findElement(By.name("group[1]"));
-        Select roleSelect = new Select(roleSelectElement);
-        roleSelect.selectByValue("2");
+        WebElement chooseProduct = driver.findElement(By.name("group[1]"));
+        Select product = new Select(chooseProduct);
+        product.selectByValue("2");
     }
 
 
     @And("^User selects size of the product$")
     public void userSelectsSizeOfTheProduct() throws InterruptedException {
 
-        WebElement Size = driver.findElement(By.id("group_1"));
-        Select roleSelect = new Select(Size);
+        WebElement size = driver.findElement(By.id("group_1"));
+        Select roleSelect = new Select(size);
         roleSelect.selectByValue("2");
 
         Thread.sleep(2000);
@@ -77,61 +77,64 @@ public class MyStoreShopping<DateTimeFormattter> {
 
     @And("^User selects quantity of the product$")
     public void userSelectsQuantityOfTheProduct() throws InterruptedException {
-        WebElement Size = driver.findElement(By.name("qty"));
-        Size.clear();
-        Size.sendKeys("5");
+        WebElement quantity = driver.findElement(By.name("qty"));
+        quantity.clear();
+        quantity.sendKeys("5");
     }
 
     @And("^User puts product to the cart$")
     public void userPutsProductToTheCart() {
-        WebElement Search = driver.findElement(By.xpath("//*[@id=\'add-to-cart-or-refresh\']/div[2]/div/div[2]/button"));
-        Search.click();
+        WebElement putProductToTheCart = driver.findElement(By.xpath("//*[@id=\'add-to-cart-or-refresh\']/div[2]/div/div[2]/button"));
+        putProductToTheCart.click();
     }
 
     @And("^User proceeds to checkout$")
     public void userProceedsToCheckout() {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        WebElement Search = driver.findElement(By.xpath("//a[@class='btn btn-primary']"));
-        Search.click();
+        WebElement proceedCheckout = driver.findElement(By.xpath("//a[@class='btn btn-primary']"));
+        proceedCheckout.click();
 
-        WebElement Search1 = driver.findElement(By.xpath("//a[@class='btn btn-primary']"));
-        Search1.click();
+        WebElement proceedCheckout1 = driver.findElement(By.xpath("//a[@class='btn btn-primary']"));
+        proceedCheckout1.click();
     }
 
     @And("^User selects delivery address$")
     public void userSelectsDeliveryAddress() {
-        WebElement Choose = driver.findElement(By.xpath("//*[@id=\'id-address-delivery-address-5145\']/header/label/span[1]/span"));
-        Choose.click();
+
+        List<WebElement> addresses = driver.findElements(By.name("id_address_delivery"));
+        System.out.println(addresses.size() - 1);
+        WebElement lastAddress = addresses.get(addresses.size()-1);
+        lastAddress.click();
 
     }
 
     @And("^User selects shipping method$")
     public void userSelectsShippingMethod() {
 
-        WebElement Choose1 = driver.findElement(By.id("checkout-delivery-step"));
-        Choose1.click();
+        WebElement selectShippingMethod = driver.findElement(By.id("checkout-delivery-step"));
+        selectShippingMethod.click();
 
-        WebElement Choose2 = driver.findElement(By.cssSelector("#js-delivery > div > div.delivery-options > div:nth-child(1) > div > span > span"));
-        Choose2.click();
+        WebElement selectPickUpInStore = driver.findElement(By.cssSelector("#js-delivery > div > div.delivery-options > div:nth-child(1) > div > span > span"));
+        selectPickUpInStore.click();
     }
 
     @And("^User selects payment method$")
     public void userSelectsPaymentMethod() {
 
-        WebElement Choose3 = driver.findElement(By.id("checkout-payment-step"));
-        Choose3.click();
+        WebElement selectPaymentMethod = driver.findElement(By.id("checkout-payment-step"));
+        selectPaymentMethod.click();
 
-        WebElement Choose4 = driver.findElement(By.cssSelector("#payment-option-1-container > span"));
-        Choose4.click();
+        WebElement selectPayByCheck = driver.findElement(By.cssSelector("#payment-option-1-container > span"));
+        selectPayByCheck.click();
     }
 
     @And("^User selects Order with an obligation to pay$")
     public void userSelectsOrderWithAnObligationToPay() {
-        WebElement Agreement = driver.findElement(By.cssSelector("#conditions_to_approve\\[terms-and-conditions\\]"));
-        Agreement.click();
+        WebElement agreementCheckbox = driver.findElement(By.cssSelector("#conditions_to_approve\\[terms-and-conditions\\]"));
+        agreementCheckbox.click();
 
-        WebElement Obligation = driver.findElement(By.cssSelector("#payment-confirmation > div.ps-shown-by-js > button"));
-        Obligation.click();
+        WebElement selectOrderWithAnObligationToPay = driver.findElement(By.cssSelector("#payment-confirmation > div.ps-shown-by-js > button"));
+        selectOrderWithAnObligationToPay.click();
     }
 
     @Then("^User makes screenshot of order items$")
@@ -144,7 +147,7 @@ public class MyStoreShopping<DateTimeFormattter> {
         try {
             FileUtils.copyFile(scrFile, new File("screenshots/" + filename));
         } catch (IOException e) {
-            System.out.println("Screenshot failed!!!!!111oneroneoneon!!!!");
+            System.out.println("Screenshot failed!!!");
             e.printStackTrace();
         }
 
